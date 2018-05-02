@@ -318,6 +318,20 @@
      */
     fireMiddleClick: false,
 
+    /** @private */
+    _initRetinaScaling: function() {
+      if (!this._isRetinaScaling()) {
+        return;
+      }
+      this.lowerCanvasEl.setAttribute('width', this.width * fabric.devicePixelRatio);
+      this.lowerCanvasEl.setAttribute('height', this.height * fabric.devicePixelRatio);
+      this.upperCanvasEl.setAttribute('width', this.width * fabric.devicePixelRatio);
+      this.upperCanvasEl.setAttribute('height', this.height * fabric.devicePixelRatio);
+
+      this.contextContainer.scale(fabric.devicePixelRatio, fabric.devicePixelRatio);
+      this.contextTop.scale(fabric.devicePixelRatio, fabric.devicePixelRatio);
+    },
+
     /**
      * @private
      */
@@ -1294,9 +1308,10 @@
         };
       }
 
+      var scaling = this.getRetinaScaling();
       return {
-        x: pointer.x * cssScale.width,
-        y: pointer.y * cssScale.height
+        x: (pointer.x * cssScale.width) / scaling,
+        y: (pointer.y * cssScale.height) / scaling
       };
     },
 
